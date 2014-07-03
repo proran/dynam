@@ -6,7 +6,7 @@ function out=kfind_node(fln,nid)
 % clear all;
 % clc;
 % fln = 'lspp_seats_12_floor';
-% nid=1146;
+% nid=[1146,1132,1266];
 % % Debug
 
 fid=fopen([fln,'.k']);
@@ -18,8 +18,9 @@ for kk=1:num
     if strcmp(arg{kk,1},'*NODE')==1
         [s1,s2]=size(arg{kk,2});
         for ii=1:s1
-            if arg{kk,2}{ii,1}==nid
-                out=arg{kk,2}(ii,:);
+            ind=find(arg{kk,2}{ii,1}==nid);
+            if isempty(ind)==0
+                out(ind,:)=arg{kk,2}(ii,:);
             end
         end
     end
