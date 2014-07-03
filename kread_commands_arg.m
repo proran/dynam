@@ -9,18 +9,19 @@ function arg = kread_commands_arg(fid)
 % % keyword                 % values    % formats   % tags
 % {'DEFINE_TRANSFORMATION'} {2x10 cell} {2x10 cell} {2x10 cell}
 
-% v3.2
+% v3.3
 % + format specs for floats changed from '% #g' to '%f' (intented for fprintu)
 %   + corrected handling of comment lines
 %   + no repeatable tags for list cards
 %     + corrected handling of filename and title tags
+%       + corrected error for whitespace-separated tags (!!) (*ELEMENT_SEATBELT)
 % July-02-2014
 
 % % Debug
 % fclose('all');
 % clear all;
 % clc;
-% fln = 'dyna_11.m_belt';
+% fln = 'dyna_12.m_belt';
 % fid=fopen([fln,'.k']);  % Open File
 % % Debug
 
@@ -95,11 +96,19 @@ for ii=1:num                                                                % lo
             if tag(tt)~=' ' && tag(tt+1)==' '                               % define end of tag
                 ind(end+1)=tt;                                              % this is position of end of tag
                 wid(end+1)=ind(end)-ind(end-1);                             % compute field width
+                if wid(end)==2                                                  % space separated tag!
+                    ind=[ind(1:end-2),ind(end)];
+                    wid=[wid(1:end-2),(wid(end-1)+wid(end))];
+                end
             end
         end
         if tag(end)~=' '                                                    % last tag
             ind(end+1)=length(tag);                                         % update tag position
             wid(end+1)=ind(end)-ind(end-1);                                 % update field width
+            if wid(end)==2                                                  % space separated tag!
+                ind=[ind(1:end-2),ind(end)];
+                wid=[wid(1:end-2),(wid(end-1)+wid(end))];
+            end
         end
         if length(wid)==1
             ind=[0,80];
