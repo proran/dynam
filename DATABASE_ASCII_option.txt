@@ -1,0 +1,33 @@
+ABSTAT	% Airbag statistics.
+ATDOUT	% Automatic tiebreak damage statistics for *CONTACT_AUTOMATIC_ONE_WAY_SURFACE_TO_SURFACE_TIEBREAK, OPTIONs 7, 9, 10,and 11 (only SMP at the moment).
+AVSFLT	% AVS database. See *DATABASE_EXTENT_OPTION.
+BNDOUT	% Boundary condition forces and energy
+CURVOUT	% Output from *DEFINE_CURVE_FUNCTION.
+DEFGEO	% Deformed geometry file. (Note that to output this file in Chrysler format insert the following line in your .cshrc file: “setenv LSTC_DEFGEO chrysler”)The NASBDF file (NASTRAN Bulk Data) is created whenever the DEFGEO file is requested.
+DCFAIL	% Failure function data for *MAT_SPOTWELD_DAIMLERCHRYSLER
+DEFORC	% Discrete elements.
+DISBOUT	% Discrete beam element, type 6, relative displacements, rotations, and force resultants, all in the local coordinate system, which is also output.
+ELOUT	% Element data. See *DATABASE_HISTORY_OPTION. Also, see Card 3 of the *DATABASE_EXTENT_BINARY parameters INTOUT and NODOUT. This latter option will output all integration point data or extrapolated data to the connectivity nodes in a file call ELOUTDET.
+GCEOUT	% Geometric contact entities.
+GLSTAT	% Global data. Always obtained if SSSTAT file is activated.
+H3OUT	% HybridIII rigid body dummies.
+JNTFORC	% Joint force file
+MATSUM	% Material energies. See Remarks 1 and 2 below.
+MOVIE	% See *DATABASE_EXTENT_OPTION.
+MPGS	% See *DATABASE_EXTENT_OPTION.
+NCFORC	% Nodal interface forces. See *CONTACT - Card 1 (SPR and MPR)
+NODFOR	% Nodal force groups. See *DATABASE_NODAL_FORCE_GROUP.
+NODOUT	% Nodal point data. See *DATABASE_HISTORY_OPTION.
+PLLYOUT	% Pulley element data for *ELEMENT_BEAM_PULLEY.
+RBDOUT	% Rigid body data. See Remark 2 below.
+RCFORC	% Resultant interface forces. Output in a local coordinate system is available, see *CONTACT, Optional Card C.
+RWFORC	% Wall forces.
+SBTOUT	% Seat belt output file
+SECFORC	% Cross section forces. See *DATABASE_CROSS_SECTION_OPTION.
+SLEOUT	% Sliding interface energy. See *CONTROL_ENERGY
+SPCFORC	% SPC reaction forces.
+SPHOUT	% SPH data. See *DATABASE_HISTORY_OPTION.
+SSSTAT	% Subsystem data. See *DATABASE_EXTENT_SSSTAT.
+SWFORC	% Nodal constraint reaction forces (spot welds and rivets).
+TPRINT	% Thermal output from a coupled structural/thermal or thermal only analysis.
+TRHIST	% Tracer particle history information. See *DATABAS
