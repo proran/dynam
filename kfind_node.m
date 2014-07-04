@@ -9,8 +9,12 @@ function out=kfind_node(fln,nid)
 % nid=[1146,1132,1266];
 % % Debug
 
-fid=fopen([fln,'.k']);
-arg=kread_commands_arg(fid);
+if ischar(fln)==1
+    fid=fopen([fln,'.k']);
+    arg=kread_commands_arg(fid);
+else
+    arg=fln;
+end
 
 out={};
 num=size(arg,1);
@@ -26,7 +30,9 @@ for kk=1:num
     end
 end
 
+if ischar(fln)==1
+    fclose(fid);
+end
 % % Debug
-% fclose('all');
 % commandwindow
 % % Debug
