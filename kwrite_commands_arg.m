@@ -41,7 +41,14 @@ for kk=1:size(arg,1);                                                       % lo
     tag=arg{kk,4};                                                          % take tag
     for ii=1:size(val,1)                                                    % loop over cards
         for jj=1:size(val,2)                                                % according to the number of nonempty elements
-            fprintf(fidout,tag{ii,jj});                                     % print values in the format
+            if isempty(tag{ii,jj})==0
+                if jj==1
+                    fprintf(fidout,tag{ii,jj});
+                else
+                    wid=wformat(frm{ii,jj});
+                    fprintf(fidout,['%',num2str(wid),'s'],tag{ii,jj});                                     % print values in the format
+                end
+            end
         end
         if isempty(tag{ii,1})==0
             fprintf(fidout,'\n');
