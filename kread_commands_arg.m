@@ -9,35 +9,30 @@ function arg = kread_commands_arg(fid)
 % % keyword                 % values    % formats   % tags
 % {'DEFINE_TRANSFORMATION'} {2x10 cell} {2x10 cell} {2x10 cell}
 
-% v3.3
+% v3.4
 % + format specs for floats changed from '% #g' to '%f' (intented for fprintu)
 %   + corrected handling of comment lines
 %   + no repeatable tags for list cards
 %     + corrected handling of filename and title tags
 %       + corrected error for whitespace-separated tags (!!) (*ELEMENT_SEATBELT)
+%         + corrected handling of *TITLE with empty tag
 % July-02-2014
 
 % % Debug
 % fclose('all');
 % clear all;
 % clc;
-% fln = 'dyna_12.m_belt';
+% fln = 'DriverBeltModelTemplate';
 % fid=fopen([fln,'.k']);  % Open File
 % % Debug
 
 s=textscan(fid,'%s','delimiter','\n','Whitespace','');  s=s{1};             % read whole file
-% Remove Title
-for ii=1:length(s)
-    if s{ii}(1:2)~='$#';                                                    % first keyword
-        break
-    end
-end
-s=s(ii:end);                                                                % skip title
 
 % Split commands
 k=0;                                                                        % keyword counter
 n=0;                                                                        % tag counter
 m=0;                                                                        % card counter
+c=cell(1,4);
 for ii=1:length(s)
     str=s{ii};
     if strcmp(s{ii}(1),'*')==1;                                             % if keyword
@@ -68,7 +63,7 @@ for ii=1:num                                                                % ru
     end
 end
 
-arg=cell(num,4);
+% arg=cell(num,4);
 for ii=1:num                                                                % loop over keywords
     arg{ii,1}=c{ii,1};                                                      % fill keywords
 %     arg{ii,4}=c{ii,3};                                                    % fill tags
@@ -76,7 +71,11 @@ for ii=1:num                                                                % lo
         emptag=0;                                                           % flag for filling the tags for list cards (see below)
         shrtag=0;
         str=c{ii,2}{jj};                                                    % current Card
-        if jj > size(c{ii,3},1);                                            % for List Cards (with lines without tags)
+        if isempty(c{ii,3})==1
+            emptag=1;
+            c{ii,3}{jj}='$# title';
+            tag = c{ii,3}{jj};
+        elseif jj > size(c{ii,3},1);                                            % for List Cards (with lines without tags)
             emptag=1;
             tag = c{ii,3}{size(c{ii,3},1)};                                 % fill tag for each line (tag forms format for reading)
         elseif isempty(c{ii,3}{jj})==1                                      % if card is empty and not commented
