@@ -69,10 +69,6 @@ for ii=1:num                                                                % lo
     arg{ii,1}=c{ii,1};                                                      % fill keywords
     %     arg{ii,4}=c{ii,3};                                                    % fill tags
     for jj=1:size(c{ii,2})                                                  % loop over Cards
-        
-        if strcmp(arg{ii,1},'*NODE')==1 && jj==2
-            disp('!');
-        end
         emptag=0;                                                           % flag for filling the tags for list cards (see below)
         shrtag=0;
         str=c{ii,2}{jj};                                                    % current Card
