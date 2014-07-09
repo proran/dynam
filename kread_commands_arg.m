@@ -9,14 +9,15 @@ function arg = kread_commands_arg(fid)
 % % keyword                 % values    % formats   % tags
 % {'DEFINE_TRANSFORMATION'} {2x10 cell} {2x10 cell} {2x10 cell}
 
-% v3.4
+% v3.5
 % + format specs for floats changed from '% #g' to '%f' (intented for fprintu)
 %   + corrected handling of comment lines
 %   + no repeatable tags for list cards
 %     + corrected handling of filename and title tags
 %       + corrected error for whitespace-separated tags (!!) (*ELEMENT_SEATBELT)
 %         + corrected handling of *TITLE with empty tag
-% July-02-2014
+%           + corrected handling of tag-like comments '$##..."
+% July-09-2014
 
 % % Debug
 % fclose('all');
@@ -41,8 +42,8 @@ for ii=1:length(s)
         m=0;                                                                % reset card counter
         c{k,1}=s{ii};
     elseif strcmp(s{ii}(1),'$')==1                                          % if not a signgle comment line
-        if length(s{ii})>1
-            if strcmp(s{ii}(1:2),'$#')==1;                                  % if tag
+        if length(s{ii})>2
+            if strcmp(s{ii}(1:3),'$# ')==1;                                  % if tag
                 n=n+1;                                                      % start new tag
                 mn=max(m+1,n);                                              % check for empty tags (titles)
                 c{k,3}{mn,1}=s{ii};                                         % fill tags
@@ -66,19 +67,23 @@ end
 % arg=cell(num,4);
 for ii=1:num                                                                % loop over keywords
     arg{ii,1}=c{ii,1};                                                      % fill keywords
-%     arg{ii,4}=c{ii,3};                                                    % fill tags
+    %     arg{ii,4}=c{ii,3};                                                    % fill tags
     for jj=1:size(c{ii,2})                                                  % loop over Cards
+        
+        if strcmp(arg{ii,1},'*NODE')==1 && jj==2
+            disp('!');
+        end
         emptag=0;                                                           % flag for filling the tags for list cards (see below)
         shrtag=0;
         str=c{ii,2}{jj};                                                    % current Card
-        if isempty(c{ii,3})==1
-            emptag=1;
+        if isempty(c{ii,3})==1 && jj==1
+%             emptag=1;
             c{ii,3}{jj}='$# title';
             tag = c{ii,3}{jj};
-        elseif jj > size(c{ii,3},1);                                            % for List Cards (with lines without tags)
+        elseif jj > size(c{ii,3}(:,1));                                            % for List Cards (with lines without tags)
             emptag=1;
             tag = c{ii,3}{size(c{ii,3},1)};                                 % fill tag for each line (tag forms format for reading)
-        elseif isempty(c{ii,3}{jj})==1                                      % if card is empty and not commented
+        elseif isempty(c{ii,3}{jj})==1                                     % if card is empty and not commented
             c{ii,3}{jj}='$# title';                                         % the tag should be a title
             tag = c{ii,3}{jj};
         else
