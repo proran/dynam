@@ -9,7 +9,7 @@ function arg = kread_commands_arg(fid)
 % % keyword                 % values    % formats   % tags
 % {'DEFINE_TRANSFORMATION'} {2x10 cell} {2x10 cell} {2x10 cell}
 
-% v3.5
+% v3.6
 % + format specs for floats changed from '% #g' to '%f' (intented for fprintu)
 %   + corrected handling of comment lines
 %   + no repeatable tags for list cards
@@ -17,13 +17,14 @@ function arg = kread_commands_arg(fid)
 %       + corrected error for whitespace-separated tags (!!) (*ELEMENT_SEATBELT)
 %         + corrected handling of *TITLE with empty tag
 %           + corrected handling of tag-like comments '$##..."
+%             + corrected handling of tag-like starting comments '$# ..."
 % July-09-2014
 
 % % Debug
 % fclose('all');
 % clear all;
 % clc;
-% fln = 'DriverBeltModelTemplate';
+% fln = 'sled_12_lspp';
 % fid=fopen([fln,'.k']);  % Open File
 % % Debug
 
@@ -41,7 +42,7 @@ for ii=1:length(s)
         n=0;                                                                % reset tag counter
         m=0;                                                                % reset card counter
         c{k,1}=s{ii};
-    elseif strcmp(s{ii}(1),'$')==1                                          % if not a signgle comment line
+    elseif strcmp(s{ii}(1),'$')==1  && k>0                                          % if not a signgle comment line
         if length(s{ii})>2
             if strcmp(s{ii}(1:3),'$# ')==1;                                  % if tag
                 n=n+1;                                                      % start new tag
@@ -49,7 +50,7 @@ for ii=1:length(s)
                 c{k,3}{mn,1}=s{ii};                                         % fill tags
             end                                                             % skip other comment lines
         end
-    else
+    elseif k>0
         m=m+1;                                                              % if not a keyword or tag or comment then card
         mn=max(m,n);                                                        % check for empty cards (titles)
         c{k,2}{mn,1}=s{ii};                                                 % fill card
