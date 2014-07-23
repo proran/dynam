@@ -49,7 +49,7 @@ tags={...
 for ii=1:2
     fprintf(fidout,'$\n');
     fprintf(fidout,['*DATABASE_BINARY_',arg{ii,1},'\n']);
-    fprintf(fidout,'$\n');
+%     fprintf(fidout,'$\n');
     fprintf(fidout,'%s\n','$       dt      lcdt      beam     npltc    psetid');
     fprintf(fidout,'% #10.4g\n',arg{ii,2});
 end

@@ -14,8 +14,7 @@ function argn=ksort_arg(arg)
 % % arg2=kread_commands_arg(fid2);
 % % 
 % % save belt_compare_temp.mat
-% load belt_compare_temp.mat
-% arg=arg1;
+% load arg.mat
 % % Debug
 
 argn={};
@@ -60,7 +59,9 @@ for ii=1:size(arg,1);
     end
 end
 args=sortrows(args,1);
-arge=sortrows(arge,1);
+if isempty(arge)==0
+    arge=sortrows(arge,1);
+end
 
 k=0;
 if ik~=0
@@ -96,7 +97,7 @@ if id~=0
    argn(k,1:4)=arg(id,1:4); 
 end
 
-% Debug
+% % Debug
 % fclose('all');
-% Debug
-% commandwindow;
+% % commandwindow;
+% % Debug

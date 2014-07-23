@@ -56,7 +56,7 @@ end
 fprintf(fidout,'$\n');
 fprintf(fidout,['*DATABASE_HISTORY_',option,'\n']);
 for ii=1:num
-    fprintf(fidout,'$\n');
+%     fprintf(fidout,'$\n');
     prt=find(~cellfun(@isempty,tags(ii,:)));                     % get indexes of nonempty elements of a current (ii) line of <fun>
     fprintf(fidout,'%10s',tags{ii,prt}); fprintf(fidout,'\n');   % print tags
     for jj=1:length(prt)                                        % according to the number of nonempty elements
