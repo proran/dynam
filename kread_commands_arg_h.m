@@ -9,7 +9,7 @@ function arg = kread_commands_arg(fid)
 % % keyword                 % values    % formats   % tags
 % {'DEFINE_TRANSFORMATION'} {2x10 cell} {2x10 cell} {2x10 cell}
 
-% v3.7
+% v3.6
 % + format specs for floats changed from '% #g' to '%f' (intented for fprintu)
 %   + corrected handling of comment lines
 %   + no repeatable tags for list cards
@@ -18,14 +18,13 @@ function arg = kread_commands_arg(fid)
 %         + corrected handling of *TITLE with empty tag
 %           + corrected handling of tag-like comments '$##..."
 %             + corrected handling of tag-like starting comments '$# ..."
-%               + looking previous cards in case of missing tags
-% Sept-23-2014
+% July-09-2014
 
 % % Debug
 % fclose('all');
 % clear all;
 % clc;
-% fln = 'test';
+% fln = 'sled_12_lspp';
 % fid=fopen([fln,'.k']);  % Open File
 % % Debug
 
@@ -57,7 +56,7 @@ for ii=1:length(s)
         c{k,2}{mn,1}=s{ii};                                                 % fill card
     end
 end
-num=size(c,1);                                                              % number of commands
+num=length(c);                                                              % number of commands
 for ii=1:num                                                                % run through all comands
     for jj=1:size(c{ii,2});                                                 % run through all cards
         if isempty(c{ii,2}{jj,1})==1
@@ -69,40 +68,23 @@ end
 % arg=cell(num,4);
 for ii=1:num                                                                % loop over keywords
     arg{ii,1}=c{ii,1};                                                      % fill keywords
-    % arg{ii,4}=c{ii,3};                                                    % fill tags
+    %     arg{ii,4}=c{ii,3};                                                    % fill tags
     for jj=1:size(c{ii,2})                                                  % loop over Cards
         emptag=0;                                                           % flag for filling the tags for list cards (see below)
         shrtag=0;
-        str=c{ii,2}{jj,1};                                                    % current Card
+        str=c{ii,2}{jj};                                                    % current Card
         if isempty(c{ii,3})==1 && jj==1
-            % emptag=1;
-            if isempty(str2num(c{ii,2}{jj,1}))==1                             % Title
-                c{ii,3}{jj,1}='$# title';
-                tag = c{ii,3}{jj,1};
-            else
-                c{ii,3}{jj,1}='$#      id                                                                 title';
-                tag = c{ii,3}{jj,1};
-            end
-        elseif jj > size(c{ii,3}(:,1));                                     % for List Cards (with lines without tags)
-            for ff = 1:size(arg,1)
-                fy=0;
-                if strcmp(arg{ff,1},arg{ii,1})==1 && jj <= size(c{ff,3}(:,1),1)
-                    c{ii,3}{jj,1}=c{ff,3}{jj,1};
-                    tag = c{ii,3}{jj,1};
-                    fy = 1;
-                    break
-                end
-            end
-            if fy == 0
-                emptag=1;
-                tag = c{ii,3}{size(c{ii,3},1)};                                 % fill tag for each line (tag forms format for reading)
-            end
-        elseif isempty(c{ii,3}{jj,1})==1                                      % if card is empty and not commented and not first line
-            
-            c{ii,3}{jj,1}='$# title';                                         % the tag should be a title
-            tag = c{ii,3}{jj,1};
+%             emptag=1;
+            c{ii,3}{jj}='$# title';
+            tag = c{ii,3}{jj};
+        elseif jj > size(c{ii,3}(:,1));                                            % for List Cards (with lines without tags)
+            emptag=1;
+            tag = c{ii,3}{size(c{ii,3},1)};                                 % fill tag for each line (tag forms format for reading)
+        elseif isempty(c{ii,3}{jj})==1                                     % if card is empty and not commented
+            c{ii,3}{jj}='$# title';                                         % the tag should be a title
+            tag = c{ii,3}{jj};
         else
-            tag=c{ii,3}{jj,1};                                                % just read tag from c
+            tag=c{ii,3}{jj};                                                % just read tag from c
         end
         if length(str)<80%length(tag)
             % str(length(str)+1:length(tag))=' ';                              % fill empty strings according to tag
@@ -159,7 +141,7 @@ for ii=1:num                                                                % lo
                     arg{ii,3}{jj,kk}=['%',num2str(wid(kk)),'i'];
                 else                                                        % float
                     arg{ii,2}{jj,kk}=rr;
-                    % arg{ii,3}{jj,kk}=['% #',num2str(wid(kk)),'g'];
+                  % arg{ii,3}{jj,kk}=['% #',num2str(wid(kk)),'g'];
                     arg{ii,3}{jj,kk}=['%',num2str(wid(kk)),'f'];
                 end
             end

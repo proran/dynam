@@ -8,6 +8,7 @@ function dyna_run(fln,ncpu)
 % fln='box_01';
 % % ------------------------------------------------------------------------
 outfln=[cd,filesep,fln,'.k'];
+% outfln=[fln,'.k'];
 
 dynfln='C:\Program Files\LSTC\LSDYNA\program\ls-dyna_smp_s_R700_winx64_ifort101.exe';	% Path to LS-DYNA Executable (Single Precision)
 mpifln='C:\Program Files\MPICH2\bin\mpiexec.exe';                                       % Path to MPI Executable
@@ -21,3 +22,4 @@ else
 end
 
 eval(runstr);
+% disp(runstr);

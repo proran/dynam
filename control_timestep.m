@@ -1,7 +1,14 @@
 function control_timestep(varargin)
 % fidout
 fidout=varargin{1};
-%arg1=varargin{2};
+if nargin==3
+    lctm=varargin{2};
+    maxdt=varargin{3};
+    define_curve(fidout,lctm,[0,maxdt;2000,maxdt],1,1,'timestep');
+else
+    lctm=0;
+end
+
 num=1;
 
 % *CONTROL_TIMESTEP
@@ -15,7 +22,7 @@ tags={'$#  dtinit','tssfac','isdo','tslimt','dt2ms','lctm','','';...
      };
  formats={'%10f','%10f','%10i','%10f','%10f','%10i','','';...
          };
-values={0,0.9,0,0,0,0,'','';...
+values={0,0.9,0,0,0,lctm,'','';...
        };
    
 fprintf(fidout,'$\n');

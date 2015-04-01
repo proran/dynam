@@ -7,6 +7,7 @@ function arg=section_arg(varargin)
 % arg=section_arg(sid,stp,title,elform);
 % stp = '_BEAM'
 % arg=section_arg(sid,stp,title,elform,ts1,ts2);
+% arg=section_arg(sid,stp,title,     6,vol,iner);
 
 sid=varargin{1};
 stp=varargin{2};
@@ -55,24 +56,38 @@ switch stp
         arg{1,2}(1,1:10)={       sid,'','','','','','','','',''};
         arg{1,3}(1,1:10)={    '%10i','','','','','','','','',''};
     case '_BEAM'
-        % *SECTION_BEAM
-        % $
-        % $#   secid    elform      shrf   qr/irid       cst     scoor       nsm
-        %    2065001         1  1.000000         1         1
-        % $
-        % $#     ts1       ts2       tt1       tt2     nsloc     ntloc
-        %   2.000000  2.000000
-        ts1=varargin{5};
-        ts2=varargin{6};
         arg{1,1}='*SECTION_BEAM';
-        % arg{1,4}(1,1:10)={'$# title','','','','','','','','',''};
-        % arg{1,2}(1,1:10)={     title,'','','','','','','','',''};
-        % arg{1,3}(1,1:10)={    '%-80s','','','','','','','','',''};
-        arg{1,4}(1,1:10)={'$#   secid','elform','shrf','qr/irid', 'cst','scoor', 'nsm','','',''};
-        arg{1,2}(1,1:10)={         sid,  elform,     1,        1,     1,     '',    '','','',''};
-        arg{1,3}(1,1:10)={      '%10i',  '%10i','%10f',   '%10i','%10i', '%10s','%10s','','',''};
-        arg{1,4}(2,1:10)={'$#     ts1', 'ts2', 'tt1', 'tt2','nsloc','ntloc','','','',''};
-        arg{1,2}(2,1:10)={         ts1,   ts2,    '',    '',     '',     '','','','',''};
-        arg{1,3}(2,1:10)={      '%10f','%10f','%10s','%10s', '%10s', '%10s','','','',''};
+        if elform==6
+            vol=varargin{5};
+            iner=varargin{6};
+            % arg{1,4}(1,1:10)={'$# title','','','','','','','','',''};
+            % arg{1,2}(1,1:10)={     title,'','','','','','','','',''};
+            % arg{1,3}(1,1:10)={    '%-80s','','','','','','','','',''};
+            arg{1,4}(1,1:10)={'$#   secid','elform','shrf','qr/irid', 'cst','scoor', 'nsm','','',''};
+            arg{1,2}(1,1:10)={         sid,  elform,     1,        1,     1,      1,    '','','',''};
+            arg{1,3}(1,1:10)={      '%10i',  '%10i','%10f',   '%10i','%10i', '%10i','%10s','','',''};
+            arg{1,4}(2,1:10)={'$#     vol','iner', 'cid',  'ca','offset','rrcon','srcon','trcon','',''};
+            arg{1,2}(2,1:10)={         vol,  iner,     0,    '',      '',     '',     '',     '','',''};
+            arg{1,3}(2,1:10)={      '%10f','%10f','%10i','%10s',  '%10s', '%10s', '%10s', '%10s','',''};
+        else
+            % *SECTION_BEAM
+            % $
+            % $#   secid    elform      shrf   qr/irid       cst     scoor       nsm
+            %    2065001         1  1.000000         1         1
+            % $
+            % $#     ts1       ts2       tt1       tt2     nsloc     ntloc
+            %   2.000000  2.000000
+            ts1=varargin{5};
+            ts2=varargin{6};
+            % arg{1,4}(1,1:10)={'$# title','','','','','','','','',''};
+            % arg{1,2}(1,1:10)={     title,'','','','','','','','',''};
+            % arg{1,3}(1,1:10)={    '%-80s','','','','','','','','',''};
+            arg{1,4}(1,1:10)={'$#   secid','elform','shrf','qr/irid', 'cst','scoor', 'nsm','','',''};
+            arg{1,2}(1,1:10)={         sid,  elform,     1,        1,     1,     '',    '','','',''};
+            arg{1,3}(1,1:10)={      '%10i',  '%10i','%10f',   '%10i','%10i', '%10s','%10s','','',''};
+            arg{1,4}(2,1:10)={'$#     ts1', 'ts2', 'tt1', 'tt2','nsloc','ntloc','','','',''};
+            arg{1,2}(2,1:10)={         ts1,   ts2,    '',    '',     '',     '','','','',''};
+            arg{1,3}(2,1:10)={      '%10f','%10f','%10s','%10s', '%10s', '%10s','','','',''};
+        end
 end
 

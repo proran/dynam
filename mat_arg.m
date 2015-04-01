@@ -5,6 +5,8 @@ function arg=mat_arg(varargin)
 % arg=mat_arg(mid,stp,title,mpul,llcid,ulcid,lmin);
 % stp = '_RIGID'
 % arg=mat_arg(mid,stp,title,ro,e,pr);
+% stp = '_GENERAL_JOINT'
+% arg=mat_arg(mid,stp,title,ro,df(1/0 1x6));
 
 
 mid=varargin{1};
@@ -109,5 +111,30 @@ switch stp
         arg{1,4}(3,1:10)={'$# lcoora1',  'a2',  'a3',  'v1',  'v2',  'v3','','','',''};
         arg{1,2}(3,1:10)={           0,     0,     0,     0,     0,     0,'','','',''};
         arg{1,3}(3,1:10)={      '%10f','%10f','%10f','%10f','%10f','%10f','','','',''};
+    case '_ELASTIC'
+        %         *MAT_ELASTIC
+        %         16 1.1400E-6  0.500000  0.300000
+        ro=varargin{4};
+        e=varargin{5};
+        pr=varargin{6};
+        
+        arg{1,1}='*MAT_ELASTIC';
+        % arg{1,4}(1,1:10)={'$# title','','','','','','','','',''};
+        % arg{1,2}(1,1:10)={     title,'','','','','','','','',''};
+        % arg{1,3}(1,1:10)={    '%-80s','','','','','','','','',''};
+        arg{1,4}(1,1:10)={'$#     mid',  'ro',   'e',  'pr','','','','','',''};
+        arg{1,2}(1,1:10)={         mid,    ro,     e,    pr,'','','','','',''};
+        arg{1,3}(1,1:10)={      '%10i','%10f','%10f','%10f','','','','','',''};
+        
+    case '_GENERAL_JOINT'
+        ro=varargin{4};
+        df=varargin{5};
+        arg{1,1}='*MAT_GENERAL_JOINT_DISCRETE_BEAM';
+        arg{1,4}(1,1:10)={'$#     mid',  'ro',  'tr',  'ts',  'tt',  'rr',  'rs',  'rt','',''};
+        arg{1,2}(1,1:10)={         mid,    ro, df(1), df(2), df(3), df(4), df(5), df(6),'',''};
+        arg{1,3}(1,1:10)={      '%10i','%10f','%10i','%10i','%10i','%10i','%10i','%10i','',''};
+        arg{1,4}(2,1:10)={'$#    rpst','rpsr','','','','','','','',''};
+        arg{1,2}(2,1:10)={           1,     1,'','','','','','','',''};
+        arg{1,3}(2,1:10)={      '%10f','%10f','','','','','','','',''};
 end
 
