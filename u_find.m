@@ -21,7 +21,12 @@ d = abs(arr(:,col) - val);
 [~,ind] = min (d);
 fvl = arr(ind,col);
 out = arr(ind,:);
-disp(['ufind tolerance: ',num2str(abs(fvl-val)/val*100),' %']);
+err=abs(fvl-val)/val*100;
+if err<5
+    disp(['ufind tolerance: ',num2str(err),' %']);
+else
+    warning(['ufind tolerance: ',num2str(err),' %']);
+end
 
 varargout{1} = out;
 if nargout == 2

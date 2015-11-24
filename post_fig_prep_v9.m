@@ -1,8 +1,11 @@
-function post_fig_prep_v8(varargin)
+function post_fig_prep_v9(varargin)
 % post_fig_prep(xlab,xpos,xsize,ylab,ypos,ysize);
-% post_fig_prep(xlab,xpos,xsize,ylab,ypos,ysize,);
 % post_fig_prep(xlab,xpos,xsize,ylab,ypos,ysize,frcz,pltx);
 % post_fig_prep(xlab,xpos,xsize,ylab,ypos,ysize,frcz,pltx,xres,yres);
+
+% % Debug
+% varargin={'x, m',[0,-30],20,'Deflection, mm',[-20,-10],20};
+% nargin=6;
 
 xlab=varargin{1};
 xpos=varargin{2};
@@ -104,12 +107,12 @@ end
 
 % DRAW AXIS LINEs
 plot([ax(1),ax(2)+Xoff],[0 0],'k','LineWidth',thk);
-plot([0 0],[ay(1),ay(2)+Yoff],'k','LineWidth',thk);
+plot([0 0]+ax(1),[ay(1),ay(2)+Yoff],'k','LineWidth',thk);
 
 % Plot new ticks  
 xm = get(gca,'XLim');
 ym = get(gca,'YLim');
-if xm(1)>-Xoff || frcz ==1
+if (xm(1)>-Xoff && ax(1)==0) || frcz ==1
     xlim([-Xoff,xm(2)]);
 end
 if ym(1)>-Yoff || frcz ==1
@@ -119,19 +122,19 @@ for i=1:length(X)
     plot([X(i) X(i)],[0 -Yoff],'-k','LineWidth',thk);
 end;
 for i=1:length(Y)
-   plot([-Xoff, 0],[Y(i) Y(i)],'-k','LineWidth',thk);
+   plot([-Xoff, 0]+ax(1),[Y(i) Y(i)],'-k','LineWidth',thk);
 end;
 
 % ADD LABELS
-text(X(2:end),zeros(1,(size(X,2)-1))-2.*Yoff,XL(2:end,:),'FontSize',fns,'HorizontalAlignment','center');
-text(zeros(size(Y))-3.*Xoff,Y,YL,'FontSize',fns);
+text(X(2:end),zeros(1,(size(X,2)-1))-2.*Yoff,XL(2:end,:),'FontSize',fns,'HorizontalAlignment','center','BackgroundColor','w');
+text(zeros(size(Y))-3.*Xoff+ax(1),Y,YL,'FontSize',fns,'BackgroundColor','w');
 
 
 % Add Arrows
 xar = get(gca,'PlotBoxAspectRatio');
 yscl = xar(1)/xar(2);
 post_arrow_v02(ax(2)+Xoff,0,Xoff,Yoff*yscl,'r');
-post_arrow_v02(0,ay(2)+Yoff,Xoff,Yoff*yscl,'u');
+post_arrow_v02(0+ax(1),ay(2)+Yoff,Xoff,Yoff*yscl,'u');
 
 % post_arrow_v01(xm(2),0,Xoff,'r');
 % post_arrow_v01(0,ym(2),ss,'u');
@@ -146,18 +149,18 @@ post_arrow_v02(0,ay(2)+Yoff,Xoff,Yoff*yscl,'u');
 % text('String','\uparrow','Position',[0,ym(2)],'FontSize',fns+10,'HorizontalAlignment','center','VerticalAlignment','baseline');
 
 % Add Labels
-if lblx>0
-    xlab = [xlab,' ÷ 10^{',num2str(lblx),'}'];
+if lblx~=0
+    xlab = [xlab,' · 10^{',num2str(lblx),'}'];
 end
-if lbly>0
-    ylab = [ylab,' ÷ 10^{',num2str(lbly),'}'];
+if lbly~=0
+    ylab = [ylab,' · 10^{',num2str(lbly),'}'];
 end
 
 xli=text(xm(2),0,xlab,'FontSize',xsize,'HorizontalAlignment','left','VerticalAlignment','middle');
 set(xli,'Units','Points');
 pst=get(xli,'Position');
 set(xli,'Position',[pst(1)+xpos(1),pst(2)+xpos(2)]);
-yli=text(0,ym(2),ylab,'FontSize',ysize,'HorizontalAlignment','right','VerticalAlignment','middle','Rotation',0);
+yli=text(0+ax(1),ym(2),ylab,'FontSize',ysize,'HorizontalAlignment','right','VerticalAlignment','middle','Rotation',0);
 set(yli,'Units','Points');
 pst=get(yli,'Position');
 set(yli,'Position',[pst(1)+ypos(1),pst(2)+ypos(2)]);
@@ -166,5 +169,3 @@ set(yli,'Position',[pst(1)+ypos(1),pst(2)+ypos(2)]);
 % axis square;
 axis off;
 set(gcf,'color','w');  
-
-end

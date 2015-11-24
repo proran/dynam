@@ -1,5 +1,6 @@
 function define_curve(varargin)
-% fidout,lcid,ao,sfa,sfo,(title)
+% define_curve(fidout,lcid,ao,sfa,sfo)
+% define_curve(fidout,lcid,ao,sfa,sfo,title)
 
 fidout=varargin{1};
 lcid=varargin{2};

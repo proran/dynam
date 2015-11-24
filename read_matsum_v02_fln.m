@@ -1,4 +1,4 @@
-function [tim,matsum]=read_matsum_v01(mids,pth)
+function [tim,matsum]=read_matsum_v02_fln(mids,fln)
 % [tim,matsum]=read_matsum_v01(mids,pth)
 
 % % Debug ------------------------------------------------------------------
@@ -16,7 +16,7 @@ adr=32:49;  % Internal Energy
 % adr=56:73;  % Kinetic Energy
 
 % matsum
-fid1 = fopen([pth,filesep,'matsum']);
+fid1 = fopen(fln);
 s=textscan(fid1,'%s','delimiter','\n','whitespace','');  s=s{1};
 fclose(fid1);
 

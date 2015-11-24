@@ -1,5 +1,24 @@
-function contact_a_s2s(fidout,ssid,msid,sstyp,mstyp,fs,fd)
+function contact_a_s2s(varargin)
 % (fidout,ssid,msid,sstyp,mstyp,fs,fd)
+% (fidout,ssid,msid,sstyp,mstyp,fs,fd,soft)
+
+
+% V2.0
+% 15/07/09
+% + SOFT option, varargin
+
+fidout=varargin{1};
+ssid=varargin{2};
+msid=varargin{3};
+sstyp=varargin{4};
+mstyp=varargin{5};
+fs=varargin{6};
+fd=varargin{7};
+if nargin==8
+    sft=varargin{8};
+else
+    sft=0;
+end
 
 num=3;
 % *CONTACT_AUTOMATIC_SURFACE_TO_SURFACE
@@ -25,6 +44,12 @@ values={ssid,msid,sstyp,mstyp,0,0,1,1;...
       fs,fd,'','','','','','';...
       0,0,0,0,1,1,'','';...
      };
+if sft>0
+     num=4;
+     tags=[tags;{'$#    soft','sofscl','lcidab','maxpar','sbopt','depth','bsort','frcfrq'}];
+     formats=[formats;{'%10i','% #10g','%10i','% #10g','% #10g','%10i','%10i','%10i'}];
+     values=[values;{sft,0,0,0,0,0,0,0}];
+end
    
 fprintf(fidout,'$\n');
 fprintf(fidout,'*CONTACT_AUTOMATIC_SURFACE_TO_SURFACE\n');

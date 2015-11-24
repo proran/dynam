@@ -1,7 +1,9 @@
-function outstr = sprintu(varargin)
+function outstr = sprintz(varargin)
 % sprintu(formats, values)
 
-% v1.3
+% sprintu
+% v1.4
+% + trailing zeros trancation
 %  + corrected handling of arrays
 %    + corrected handling of empty strings
 %    + corrected error of string printing
@@ -123,7 +125,20 @@ if skp==0
         %     end
         %     % Debug
         
-        outstr = [outstr,sprintf(fom,vol)];
+        ns=sprintf(fom,vol);
+        nn=ns;
+        % Trailing Zero Trancation
+        if strcmp(ns(end),'0')==1 && isempty(strfind(ns,'.'))==0
+            for in=length(ns):-1:2
+                if strcmp(ns(in),'0')==1 && strcmp(ns(in-1),'.')==0
+                    nn=ns(1:in-1);
+                else
+                    break
+                end
+            end
+        end
+        nn=[repmat(' ',1,length(ns)-length(nn)),nn];
+        outstr = [outstr,nn];
     end
 end
 

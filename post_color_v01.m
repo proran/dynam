@@ -93,4 +93,4 @@ end
 % fprintf(fidout,'%s\n',['exit']);
 fprintf(fidout,'%s\n',['']);
 fclose(fidout);
-eval(['! "',lspexe,'" c=',tar,filesep,scrfln]);
+system(['"',lspexe,'" c=',src,filesep,scrfln]);
